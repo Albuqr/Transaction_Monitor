@@ -1,0 +1,28 @@
+# Python
+*.py[cod]
+__pycache__/
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# Environment variables
+.env
+
+# Credentials
+*.json
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
