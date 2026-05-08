@@ -13,7 +13,6 @@ build/
 venv/
 .venv/
 env/
-.env/
 
 # Environment variables
 .env
@@ -27,4 +26,4 @@ env/
 # Logs
 *.log
 .idea/
-.idea/
+gcp-credentials.json
