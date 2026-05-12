@@ -27,3 +27,4 @@ env/
 *.log
 .idea/
 gcp-credentials.json
+alerts.db

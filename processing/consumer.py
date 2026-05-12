@@ -1,5 +1,6 @@
 import os
 import sys
+import sqlite3
 import json
 from confluent_kafka import Consumer
 import redis
@@ -24,6 +25,23 @@ consumer = Consumer(config)
 
 consumer.subscribe([os.getenv('KAFKA_TOPIC')])
 
+
+db_conn = sqlite3.connect("alerts.db")
+db_cursor = db_conn.cursor()
+
+db_cursor.execute("""
+    CREATE TABLE IF NOT EXISTS alerts (
+        transaction_id TEXT PRIMARY KEY,
+        cost_center TEXT,
+        amount REAL,
+        mean REAL,
+        timestamp REAL,
+        deviation REAL,
+        reviewed BOOL
+    )
+""")
+
+db_conn.commit()
 
 
 try:
@@ -51,6 +69,27 @@ try:
                 is_anomaly = amount < (mean * 0.8) or amount > (mean * 1.2)
 
                 if is_anomaly:
+                    deviation = (amount - mean) / mean
+
+                    transaction_id = data.get('transaction_id')
+                    timestamp = data.get('timestamp')
+                    reviewed = False
+
+                    db_cursor.execute("""
+                                            INSERT INTO alerts (
+                                                transaction_id, 
+                                                cost_center, 
+                                                amount, 
+                                                mean, 
+                                                timestamp, 
+                                                deviation, 
+                                                reviewed
+                                            )
+                                            VALUES (?, ?, ?, ?, ?, ?, ?)
+                                        """,
+                                      (transaction_id, cost_center, amount, mean, timestamp, deviation, reviewed)) ## personal note, use ??? to prevent sql injection dipshit
+
+                    db_conn.commit()
                     print(f"ANOMALY DETECTED: {cost_center}  Amount: {amount}  Mean: {mean} (Outside 20% range)")
                 else:
 
