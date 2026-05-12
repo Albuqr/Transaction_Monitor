@@ -44,7 +44,7 @@ def run_seeder():
         # Write to Redis
         r.hset(redis_key, mapping={
             "count": count,
-            "total_sum": total_sum,
+            "sum": total_sum,
             "mean": mean
         })
 

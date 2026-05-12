@@ -36,9 +36,8 @@ for i in range(5):
 
         transaction = {
             "transaction_id": unique_id,
-            "amount": 10.75,
-            "category": "Electronics",
-            "supplier_id": "SUP-001",
+            "cost_center": "Producao",
+            "amount": 205510,
             "timestamp": datetime.now().isoformat()
         }
 
