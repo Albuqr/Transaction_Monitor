@@ -1,4 +1,15 @@
+[🇺🇸 English](#transaction-monitor) | [🇧🇷 Português](#monitor-de-transações)
+
+---
+
 # Transaction Monitor
+
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![Kafka](https://img.shields.io/badge/Apache_Kafka-KRaft-black)
+![Redis](https://img.shields.io/badge/Redis-7-red)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 Real-time financial anomaly detection pipeline for a Brazilian confectionery manufacturer: streams cost center transactions through Kafka, compares each against a rolling per-center mean, and surfaces deviations beyond ±20% for human review via a Streamlit dashboard.
 
@@ -94,7 +105,16 @@ This repository is the second of three interconnected systems built for the same
 
 ---
 
-# Transaction Monitor
+[🇺🇸 English](#transaction-monitor) | [🇧🇷 Português](#monitor-de-transações)
+
+# Monitor de Transações
+
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![Kafka](https://img.shields.io/badge/Apache_Kafka-KRaft-black)
+![Redis](https://img.shields.io/badge/Redis-7-red)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 Pipeline de detecção de anomalias financeiras em tempo real para um fabricante brasileiro de confeitos: transmite transações por centro de custo através do Kafka, compara cada uma com uma média móvel por centro, e expõe desvios acima de ±20% para revisão humana via dashboard Streamlit.
 
