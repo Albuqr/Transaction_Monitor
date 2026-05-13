@@ -3,6 +3,7 @@ import sys
 from google.cloud import bigquery
 import redis
 from dotenv import load_dotenv
+import random
 
 load_dotenv()
 
