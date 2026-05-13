@@ -25,12 +25,11 @@ class DecisionModel(BaseModel):
 @app.get("/alerts")
 def get_alerts():
     db_conn = sqlite3.connect("alerts.db")
+    db_conn.row_factory = sqlite3.Row
     db_cursor = db_conn.cursor()
-    db_cursor.execute(
-        """ select * from alerts where reviewed = 0 """
-    )
+    db_cursor.execute("SELECT * FROM alerts")
     results = db_cursor.fetchall()
-    return results
+    return [dict(row) for row in results]
 
 @app.post("/resolutions")
 def post_resolutions(decision: DecisionModel):
