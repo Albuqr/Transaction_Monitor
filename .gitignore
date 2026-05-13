@@ -28,3 +28,4 @@ env/
 .idea/
 gcp-credentials.json
 alerts.db
+requirements.txt
