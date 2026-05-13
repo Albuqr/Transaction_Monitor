@@ -1,3 +1,5 @@
+print("consumer.py: script started", flush=True)
+
 import os
 import sys
 import sqlite3
@@ -8,6 +10,19 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+print(f"ENV KAFKA_BOOTSTRAP_SERVERS={os.getenv('KAFKA_BOOTSTRAP_SERVERS')}", flush=True)
+print(f"ENV KAFKA_TOPIC={os.getenv('KAFKA_TOPIC')}", flush=True)
+print(f"ENV REDIS_HOST={os.getenv('REDIS_HOST')}", flush=True)
+print(f"ENV REDIS_PORT={os.getenv('REDIS_PORT')}", flush=True)
+
+_kafka_servers = os.getenv('KAFKA_BOOTSTRAP_SERVERS')
+_kafka_topic = os.getenv('KAFKA_TOPIC')
+
+if not _kafka_servers:
+    sys.exit("ERROR: KAFKA_BOOTSTRAP_SERVERS environment variable is required")
+if not _kafka_topic:
+    sys.exit("ERROR: KAFKA_TOPIC environment variable is required")
+
 redis_host = os.getenv("REDIS_HOST", "localhost")
 redis_port = int(os.getenv("REDIS_PORT", 6379))
 redis_db = int(os.getenv("REDIS_DB", 0))
@@ -16,14 +31,14 @@ r = redis.Redis(host=redis_host, port=redis_port, db=redis_db,
                 decode_responses=True)
 
 config = {
-    'bootstrap.servers': os.getenv('KAFKA_BOOTSTRAP_SERVERS'),
+    'bootstrap.servers': _kafka_servers,
     'group.id': 'transaction_monitor',
     'auto.offset.reset': 'earliest',
 }
 
 consumer = Consumer(config)
 
-consumer.subscribe([os.getenv('KAFKA_TOPIC')])
+consumer.subscribe([_kafka_topic])
 
 
 db_conn = sqlite3.connect("alerts.db")
@@ -50,7 +65,7 @@ try:
         if message is None:
             continue
         elif message.error():
-            print(message.error())
+            print(message.error(), flush=True)
             continue
         else:
             decoded_string = message.value().decode('utf-8')
@@ -90,7 +105,7 @@ try:
                                       (transaction_id, cost_center, amount, mean, timestamp, deviation, reviewed)) ## personal note, use ??? to prevent sql injection dipshit
 
                     db_conn.commit()
-                    print(f"ANOMALY DETECTED: {cost_center}  Amount: {amount}  Mean: {mean} (Outside 20% range)")
+                    print(f"ANOMALY DETECTED: {cost_center}  Amount: {amount}  Mean: {mean} (Outside 20% range)", flush=True)
                 else:
 
                     new_count = count + 1
@@ -102,11 +117,11 @@ try:
                         "sum": new_sum,
                         "mean": new_mean
                     })
-                    print(f"Update on {cost_center} new mean is {new_mean:.2f}")
+                    print(f"Update on {cost_center} new mean is {new_mean:.2f}", flush=True)
 
             else:
 
-                print(f"NEW COST CENTER: {cost_center} not found. Creating initial baseline.")
+                print(f"NEW COST CENTER: {cost_center} not found. Creating initial baseline.", flush=True)
                 r.hset(f"baseline:{cost_center}", mapping={
                     "count": 1,
                     "sum": amount,

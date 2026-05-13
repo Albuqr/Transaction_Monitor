@@ -30,6 +30,11 @@ row_list = list(results)
 broker = os.getenv('KAFKA_BOOTSTRAP_SERVERS')
 topic = os.getenv('KAFKA_TOPIC')
 
+if not broker:
+    sys.exit("ERROR: KAFKA_BOOTSTRAP_SERVERS environment variable is required")
+if not topic:
+    sys.exit("ERROR: KAFKA_TOPIC environment variable is required")
+
 conf = {'bootstrap.servers': broker}
 p = Producer(**conf)
 

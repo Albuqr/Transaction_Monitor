@@ -4,20 +4,80 @@ services:
   kafka:
     image: confluentinc/cp-kafka
     ports:
-      - "9092:9092"
+      - "127.0.0.1:9092:9092"
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qg==
+    networks:
+      - monitor_network
 
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     restart: always
+    networks:
+      - monitor_network
+
+  fastapi:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:8000:8000"
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    depends_on:
+      - kafka
+      - redis
+    env_file: .env
+    volumes:
+      - ./alerts.db:/app/alerts.db
+    networks:
+      - monitor_network
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    ports:
+      - "127.0.0.1:8501:8501"
+    command: streamlit run dashboard.py --server.port 8501 --server.address 0.0.0.0
+    depends_on:
+      - fastapi
+    env_file: .env
+    networks:
+      - monitor_network
+
+  consumer:
+    build: ./processing
+    depends_on:
+      - kafka
+      - redis
+    env_file: .env
+    environment:
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - ./alerts.db:/app/alerts.db
+    restart: unless-stopped
+    networks:
+      - monitor_network
+
+  producer:
+    build: ./producer
+    profiles: ["tools"]
+    depends_on:
+      - kafka
+    env_file: .env
+    volumes:
+      - ./gcp-credentials.json:/app/gcp-credentials.json
+    networks:
+      - monitor_network
+
+networks:
+  monitor_network:
+    driver: bridge

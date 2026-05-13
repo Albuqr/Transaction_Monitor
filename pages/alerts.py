@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import requests
 import plotly.graph_objects as go
@@ -14,7 +15,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-API_URL = "http://localhost:8000"
+API_URL = os.getenv("API_URL", "http://localhost:8000")
 
 
 def fetch_alerts():
