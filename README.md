@@ -11,11 +11,11 @@
 ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-Real-time financial anomaly detection pipeline for a Brazilian confectionery manufacturer: streams cost center transactions through Kafka, compares each against a rolling per-center mean, and surfaces deviations beyond ±20% for human review via a Streamlit dashboard.
+Real-time financial anomaly detection pipeline for a Brazilian food manufacturer: streams cost center transactions through Kafka, compares each against a rolling per-center mean, and surfaces deviations beyond ±20% for human review via a Streamlit dashboard.
 
 ## The Problem
 
-A Brazilian confectionery manufacturer with 28 production machines records all financial transactions manually. The factory needed a way to detect anomalous financial transactions in real time — payments that deviate significantly from historical cost center baselines — so staff could investigate before money was lost.
+A Brazilian food manufacturer with 28 production machines records all financial transactions manually. The factory needed a way to detect anomalous financial transactions in real time — payments that deviate significantly from historical cost center baselines — so staff could investigate before money was lost.
 
 The source data contained no supplier-level descriptions; the factory never recorded which supplier each payment went to. The system operates at cost center granularity, the finest level the data actually supports. Fabricating supplier mappings was rejected: it would make anomaly detection misleading rather than useful.
 

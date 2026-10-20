@@ -34,10 +34,11 @@ st.markdown("""
 st.markdown("""
 <p style="color:#B0BAC4; font-size:0.9rem; line-height:1.8; max-width:820px;
           border-left:2px solid #2D3748; padding-left:18px; margin-bottom:3rem;">
-    A Brazilian confectionery manufacturer with 28 production machines records all financial
+    A Brazilian food manufacturer with 28 production machines records all financial
     transactions manually. This system ingests those transactions through Kafka, compares them
     against rolling cost center baselines stored in Redis, and flags deviations beyond 20% for
-    human review &#8212; in under 30 seconds.
+    human review. Design target: under 30 seconds (not measured). This public site
+    runs as a demo with stored alerts; no Kafka pipeline is running behind it.
 </p>
 """, unsafe_allow_html=True)
 
@@ -50,7 +51,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 boxes = [
-    ("Producer",      "Reads ERP exports", "#4F8BF9", "rgba(79, 139, 249, 0.15)"),
+    ("Producer",      "Test feed from BigQuery budgets", "#4F8BF9", "rgba(79, 139, 249, 0.15)"),
     ("Kafka (KRaft)", "Event streaming",   "#E31C1C", "rgba(227, 28, 28, 0.15)"),
     ("Consumer",      "Detects anomalies", "#4F8BF9", "rgba(79, 139, 249, 0.15)"),
     ("Redis",         "Rolling baselines", "#D82C20", "rgba(216, 44, 32, 0.15)"),
