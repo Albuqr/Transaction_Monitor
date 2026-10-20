@@ -18,9 +18,10 @@ if not _redis_host:
 redis_host = _redis_host
 redis_port = int(os.getenv("REDIS_PORT", 6379))
 redis_db = int(os.getenv("REDIS_DB", 0))
+redis_password = os.getenv("REDIS_PASSWORD") or None
 
 r = redis.Redis(host=redis_host, port=redis_port, db=redis_db,
-                decode_responses=True)
+                password=redis_password, decode_responses=True)
 
 app = FastAPI()
 
