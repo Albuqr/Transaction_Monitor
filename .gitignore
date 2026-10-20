@@ -33,3 +33,5 @@ requirements.txt
 testkit-reports/
 testkit/web/node_modules/
 testkit/.bin/
+!testkit.config.json
+!testkit/**/*.json

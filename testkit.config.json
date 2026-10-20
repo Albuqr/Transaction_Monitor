@@ -1,0 +1,5 @@
+{
+  "project": { "name": "Transaction_Monitor" },
+  "auth": { "strategy": "none", "roles": [] },
+  "links": { "checkExternal": false }
+}
