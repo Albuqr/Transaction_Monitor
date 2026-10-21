@@ -29,3 +29,9 @@ env/
 gcp-credentials.json
 alerts.db
 requirements.txt
+.env.testkit
+testkit-reports/
+testkit/web/node_modules/
+testkit/.bin/
+!testkit.config.json
+!testkit/**/*.json
